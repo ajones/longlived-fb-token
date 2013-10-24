@@ -14,15 +14,21 @@ echo "Paste your current short-lived access token : (https://developers.facebook
 read ACCESSTOKEN
 
 echo "------------------------------------"
-echo "Using App ID [$APPID]" 
-echo "Using App Secret [$APPSECRET]" 
-echo "Using Access Token [$ACCESSTOKEN]" 
+echo " Using App ID [$APPID]" 
+echo " Using App Secret [$APPSECRET]" 
+echo " Using Access Token [$ACCESSTOKEN]" 
 echo "------------------------------------"
 
 echo "Retrieving long lived token ..."
 
 URL="https://graph.facebook.com/oauth/access_token?client_id=$APPID&grant_type=fb_exchange_token&client_secret=$APPSECRET&fb_exchange_token=$ACCESSTOKEN"
-echo "  URL: $URL"
+echo " URL: $URL"
 
 app_json=$(curl "$URL")
-echo " YOUR NEW LONG LIVED ACCESS TOKEN : $app_json"
+token=(${app_json//access_token=/ })
+token=(${token//&expires=/ })
+
+echo "------------------------------------"
+echo " YOUR NEW LONG LIVED ACCESS TOKEN IS :"
+echo " $token"
+echo "------------------------------------"
